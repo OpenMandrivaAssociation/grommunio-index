@@ -1,5 +1,5 @@
 Name:		grommunio-index
-Version:	1.6
+Version:	1.7
 Release:	1
 Source0:	https://github.com/grommunio/grommunio-index/archive/refs/tags/%{version}.tar.gz#/grommunio-index-%{version}.tar.gz
 Summary:	Full-text search index generator for grommunio-web
@@ -42,7 +42,7 @@ EOF
 # Service runs as groindex:www so it can write the web index dir
 sed -i \
 	-e 's/^Group=.*/Group=www/' \
-	-e 's/^SupplementaryGroups=.*/SupplementaryGroups=gromoxcf grommunio/' \
+	-e 's/^SupplementaryGroups=.*/SupplementaryGroups=groindex gromoxcf grommunio/' \
 	%{buildroot}%{_unitdir}/grommunio-index.service
 
 install -d %{buildroot}%{_sysconfdir}/gromox
@@ -51,6 +51,8 @@ cat >%{buildroot}%{_sysconfdir}/gromox/index.cfg <<'EOF'
 index_root = /srv/grommunio/web/sqlite-index
 user = groindex
 group = www
+# -A also indexes public folders. Set to no to skip them.
+# index_public = yes
 EOF
 
 %files
